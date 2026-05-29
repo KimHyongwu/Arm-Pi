@@ -4,8 +4,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_srvs/srv/trigger.hpp"
 // ArmPi
-#include "ros_robot_controller_msgs/msg/servo_position.hpp"
-#include "ros_robot_controller_msgs/msg/servos_position.hpp"
+#include "controller_msg/msg/servo_position.hpp"
+#include "controller_msg/msg/servos_position.hpp"
 
 using namespace std::chrono_literals;
 
@@ -14,7 +14,7 @@ public:
     ServoController() 
         :Node("ServoController")
     {
-        this->pub = this->create_publisher<ros_robot_controller_msgs::msg::ServosPosition>("/ros_robot_controller/bus_servo/set_position", 1);
+        this->pub = this->create_publisher<controller_msg::msg::ServosPosition>("/ros_robot_controller/bus_servo/set_position", 1);
 
         // Waiting for robot arm underlying control services to start
         this->client = this->create_client<std_srvs::srv::Trigger>("/ros_robot_controller/init_finish");
@@ -25,7 +25,7 @@ public:
     void set_servo_position(const size_t& duration, std::vector<std::pair<size_t, size_t> > positions);
 
 private:
-    rclcpp::Publisher<ros_robot_controller_msgs::msg::ServosPosition>::SharedPtr pub;
+    rclcpp::Publisher<controller_msg::msg::ServosPosition>::SharedPtr pub;
     rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr client;
 };
 
@@ -33,10 +33,10 @@ void ServoController::set_servo_position(const size_t& duration,
     std::vector<std::pair<size_t, size_t> > positions) 
 {
     // Generate message
-    auto msg = ros_robot_controller_msgs::msg::ServosPosition();
+    auto msg = controller_msg::msg::ServosPosition();
     msg.duration = duration;
     for (const auto& i : positions) {
-        auto position = ros_robot_controller_msgs::msg::ServoPosition();
+        auto position = controller_msg::msg::ServoPosition();
         position.id = i.first;
         position.position = i.second;
 

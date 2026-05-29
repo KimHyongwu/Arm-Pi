@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(ros_robot_controller_msgs)
+project(controller)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -7,16 +7,19 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
-find_package(std_msgs REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(rclcpp REQUIRED)
 
-rosidl_generate_interfaces(${PROJECT_NAME}
-    "msg/ServoPosition.msg"
-    "msg/ServosPosition.msg"
-    DEPENDENCIES std_msgs
+
+## Launch files ##
+install(DIRECTORY
+    launch
+    DESTINATION share/${PROJECT_NAME}
+)
+
+## Executables ##
+add_executable(controller src/controller_node.cpp)
+ament_target_dependencies(controller 
+    rclcpp 
 )
 
 if(BUILD_TESTING)
