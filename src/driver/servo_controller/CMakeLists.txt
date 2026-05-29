@@ -1,14 +1,16 @@
 cmake_minimum_required(VERSION 3.8)
-project(controller)
+project(servo_controller)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
+## Find dependencies ##
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-
+find_package(std_srvs REQUIRED)
+# ArmPi
+find_package(servo_controller_msg REQUIRED)
 
 ## Launch files ##
 install(DIRECTORY
@@ -17,9 +19,16 @@ install(DIRECTORY
 )
 
 ## Executables ##
-add_executable(controller src/controller_node.cpp)
-ament_target_dependencies(controller 
+add_executable(bus_servo src/bus_servo_node.cpp)
+ament_target_dependencies(bus_servo 
     rclcpp 
+    std_srvs 
+    servo_controller_msg
+)
+
+install(TARGETS
+    bus_servo
+    DESTINATION lib/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)

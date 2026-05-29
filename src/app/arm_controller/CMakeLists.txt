@@ -1,22 +1,34 @@
 cmake_minimum_required(VERSION 3.8)
-project(controller_msg)
+project(arm_controller)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
-find_package(ament_cmake REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
-find_package(std_msgs REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+include_directories(include)
 
-rosidl_generate_interfaces(${PROJECT_NAME}
-    "msg/ServoPosition.msg"
-    "msg/ServosPosition.msg"
-    DEPENDENCIES std_msgs
+## Find dependencies ##
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+# ArmPi
+find_package(arm_controller_msg)
+
+## Launch files ##
+install(DIRECTORY
+    launch
+    DESTINATION share/${PROJECT_NAME}
+)
+
+## Executables ##
+add_executable(arm_controller src/arm_controller_node.cpp)
+ament_target_dependencies(arm_controller 
+    rclcpp
+    arm_controller_msg
+)
+
+install(TARGETS
+    arm_controller
+    DESTINATION lib/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)
