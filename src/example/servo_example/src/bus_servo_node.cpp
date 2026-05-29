@@ -17,7 +17,7 @@ public:
         this->pub = this->create_publisher<ros_robot_controller_msgs::msg::ServosPosition>("/ros_robot_controller/bus_servo/set_position", 1);
 
         // Waiting for robot arm underlying control services to start
-        this->client = this->create_client<std_srvs::srv::Trigger>("/arm_controller/init_finish");
+        this->client = this->create_client<std_srvs::srv::Trigger>("/ros_robot_controller/init_finish");
         this->client->wait_for_service();
     }
     
