@@ -58,9 +58,9 @@ int main(int argc, char** argv) {
 
     try {
         while (rclcpp::ok()) {
-            arm_controller->set_servo_position(1, { std::make_pair(4, 300) });  // Set the position of Servo 4 to 300
+            arm_controller->set_servo_position(1, { std::make_pair(4, 300) });  // Set the position of servo 4 to 300
             std::this_thread::sleep_for(1s);                                // Wait 1 sec
-            arm_controller->set_servo_position(1, { std::make_pair(4, 600) });  // Set the position of Servo 4 to 600
+            arm_controller->set_servo_position(1, { std::make_pair(4, 600) });  // Set the position of servo 4 to 600
             std::this_thread::sleep_for(1s);                                // Wait 1 sec
         }
     } catch(const rclcpp::exceptions::RCLError& e) {
