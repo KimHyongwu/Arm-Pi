@@ -58,10 +58,10 @@ int main(int argc, char** argv) {
 
     try {
         while (rclcpp::ok()) {
-            controller->set_servo_position(1, { std::make_pair(4, 100) });  // Set the position of Servo 4 to 200
-            std::this_thread::sleep_for(1s);                                // Wait 0.5 sec
-            controller->set_servo_position(1, { std::make_pair(4, 300) });  // Set the position of Servo 4 to 500
-            std::this_thread::sleep_for(1s);                                // Wait 0.5 sec
+            controller->set_servo_position(1, { std::make_pair(4, 300) });  // Set the position of Servo 4 to 200
+            std::this_thread::sleep_for(1s);                                // Wait 1 sec
+            controller->set_servo_position(1, { std::make_pair(4, 600) });  // Set the position of Servo 4 to 300
+            std::this_thread::sleep_for(1s);                                // Wait 1 sec
         }
     } catch(const rclcpp::exceptions::RCLError& e) {
         RCLCPP_ERROR(rclcpp::get_logger(""), "rclcpp::exceptions::RCLError: %s", e.what());
