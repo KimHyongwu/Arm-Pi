@@ -4,8 +4,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_srvs/srv/trigger.hpp"
 // ArmPi
-#include "servo_controller_msg/msg/servo_position.hpp"
-#include "servo_controller_msg/msg/servos_position.hpp"
+#include "ros_robot_controller_msgs/msg/servo_position.hpp"
+#include "ros_robot_controller_msgs/msg/servos_position.hpp"
 
 using namespace std::chrono_literals;
 
@@ -14,18 +14,18 @@ public:
     ServoController() 
         :Node("servo_controller")
     {
-        this->pub = this->create_publisher<servo_controller_msg::msg::ServosPosition>("/arm_controller/bus_servo/set_position", 1);
+        this->pub = this->create_publisher<ros_robot_controller_msgs::msg::ServosPosition>("/ros_robot_controller/bus_servo/set_position", 1);
 
         // Waiting for robot arm underlying control services to start
-        // this->client = this->create_client<std_srvs::srv::Trigger>("/arm_controller/init_finish");
-        // this->client->wait_for_service();
+        this->client = this->create_client<std_srvs::srv::Trigger>("/arm_controller/init_finish");
+        this->client->wait_for_service();
     }
     
 public:
     void set_servo_position(const size_t& duration, std::vector<std::pair<size_t, size_t> > positions);
 
 private:
-    rclcpp::Publisher<servo_controller_msg::msg::ServosPosition>::SharedPtr pub;
+    rclcpp::Publisher<ros_robot_controller_msgs::msg::ServosPosition>::SharedPtr pub;
     rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr client;
 };
 
@@ -33,10 +33,10 @@ void ServoController::set_servo_position(const size_t& duration,
     std::vector<std::pair<size_t, size_t> > positions) 
 {
     // Generate message
-    auto msg = servo_controller_msg::msg::ServosPosition();
+    auto msg = ros_robot_controller_msgs::msg::ServosPosition();
     msg.duration = duration;
     for (const auto& i : positions) {
-        auto position = servo_controller_msg::msg::ServoPosition();
+        auto position = ros_robot_controller_msgs::msg::ServoPosition();
         position.id = i.first;
         position.position = i.second;
 

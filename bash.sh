@@ -1,5 +1,5 @@
-colcon build --paths src/driver/servo_controller_msg
+colcon build --paths src/driver/*_msg
 source install/setup.sh
-colcon build --paths src/driver/* src/* 
+colcon build
 source install/setup.sh
 ros2 launch servo_controller bus_servo.launch.py

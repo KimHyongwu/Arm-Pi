@@ -1,17 +1,16 @@
 cmake_minimum_required(VERSION 3.8)
-project(arm_controller)
+project(servo)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-include_directories(include)
-
 ## Find dependencies ##
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(std_srvs REQUIRED)
 # ArmPi
-find_package(servo_controller_msg)
+find_package(ros_robot_controller_msgs REQUIRED)
 
 ## Launch files ##
 install(DIRECTORY
@@ -20,17 +19,17 @@ install(DIRECTORY
 )
 
 ## Executables ##
-add_executable(arm_controller src/arm_controller_node.cpp)
-ament_target_dependencies(arm_controller 
-    rclcpp
-    servo_controller_msg
+add_executable(bus_servo src/bus_servo_node.cpp)
+ament_target_dependencies(bus_servo 
+    rclcpp 
+    std_srvs 
+    ros_robot_controller_msgs
 )
 
 install(TARGETS
-    arm_controller
+    bus_servo
     DESTINATION lib/${PROJECT_NAME}
 )
-
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
