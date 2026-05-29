@@ -14,7 +14,7 @@ def generate_launch_description():
     )
 
     bus_servo_node = Node(
-        package="example",
+        package="servo",
         executable="bus_servo",
         output="screen"
     )
